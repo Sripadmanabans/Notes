@@ -44,6 +44,8 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:${DAGGER2_VERSION}"
     kapt "com.google.dagger:dagger-android-processor:${DAGGER2_VERSION}"
 
+    implementation "com.jakewharton.timber:timber:${TIMBER_VERSION}"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

@@ -10,6 +10,7 @@ buildscript {
         KOTLIN_VERSION = '1.2.10'
 
         RXJAVA2_VERSION = '2.1.7'
+        RX_ANDROID_VERSION = '2.0.1'
 
         CONSTRAINT_LAYOUT_VERSION = '1.1.0-beta4'
     }

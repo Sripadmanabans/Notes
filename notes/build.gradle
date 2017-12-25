@@ -32,6 +32,7 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${CONSTRAINT_LAYOUT_VERSION}"
 
     implementation "io.reactivex.rxjava2:rxjava:${RXJAVA2_VERSION}"
+    implementation "io.reactivex.rxjava2:rxandroid:${RX_ANDROID_VERSION}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

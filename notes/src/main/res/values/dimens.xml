@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Splash Screen-->
+    <dimen name="splash_text_size">50sp</dimen>
+
+</resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.Window
 import com.sripad.notes.R
 import com.sripad.notes.home.HomeActivity
+import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,6 +21,7 @@ class SplashActivity : AppCompatActivity() {
     private var timerDisposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)

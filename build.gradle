@@ -9,6 +9,8 @@ buildscript {
 
         KOTLIN_VERSION = '1.2.10'
 
+        DAGGER2_VERSION = '2.14.1'
+
         RXJAVA2_VERSION = '2.1.7'
         RX_ANDROID_VERSION = '2.0.1'
 

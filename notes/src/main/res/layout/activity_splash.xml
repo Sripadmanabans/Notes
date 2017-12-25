@@ -10,4 +10,4 @@
     android:textColor="@color/splash_text_color"
     android:textSize="@dimen/splash_text_size"
     android:textStyle="bold"
-    tools:context=".SplashActivity"/>
+    tools:context=".splash.SplashActivity"/>

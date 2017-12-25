@@ -1,9 +1,10 @@
-package com.sripad.notes
+package com.sripad.notes.splash
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
+import com.sripad.notes.R
 
 /**
  * Activity that acts as the splash screen.

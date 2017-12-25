@@ -8,6 +8,8 @@ buildscript {
         SUPPORT_LIBRARY_VERSION = '27.0.2'
 
         KOTLIN_VERSION = '1.2.10'
+
+        RXJAVA2_VERSION = '2.1.7'
     }
 
     repositories {

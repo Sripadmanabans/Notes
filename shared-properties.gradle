@@ -1,0 +1,55 @@
+ext {
+    COMPILE_SDK = 27
+    MIN_TARGET_SDK = 21
+    TARGET_SDK = 27
+
+    SUPPORT_LIBRARY_VERSION = '27.0.2'
+    CONSTRAINT_LAYOUT_VERSION = '1.1.0-beta4'
+
+    KOTLIN_VERSION = '1.2.10'
+    DAGGER2_VERSION = '2.14.1'
+    RXJAVA2_VERSION = '2.1.7'
+    RX_ANDROID_VERSION = '2.0.1'
+    TIMBER_VERSION = '4.6.0'
+}
+
+ext.ANDROID_LIBRARY_CONFIGURATION = {
+
+    compileSdkVersion COMPILE_SDK
+
+    defaultConfig {
+        minSdkVersion MIN_TARGET_SDK
+        targetSdkVersion TARGET_SDK
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+
+        kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+ext.DAGGER_DEPENDENCIES = {
+    implementation "com.google.dagger:dagger:${DAGGER2_VERSION}"
+    kapt "com.google.dagger:dagger-compiler:${DAGGER2_VERSION}"
+}
+
+ext.DAGGER_ANDROID_DEPENDENCIES = {
+    implementation "com.google.dagger:dagger-android:${DAGGER2_VERSION}"
+    implementation "com.google.dagger:dagger-android-support:${DAGGER2_VERSION}"
+    kapt "com.google.dagger:dagger-android-processor:${DAGGER2_VERSION}"
+}
+
+ext.RXJAVA2_DEPENDENCIES = {
+    implementation "io.reactivex.rxjava2:rxjava:${RXJAVA2_VERSION}"
+    implementation "io.reactivex.rxjava2:rxandroid:${RX_ANDROID_VERSION}"
+}

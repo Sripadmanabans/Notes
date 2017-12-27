@@ -1,25 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-
-    ext {
-        COMPILE_SDK = 27
-        MIN_TARGET_SDK = 21
-        TARGET_SDK = 27
-
-        SUPPORT_LIBRARY_VERSION = '27.0.2'
-        CONSTRAINT_LAYOUT_VERSION = '1.1.0-beta4'
-
-        KOTLIN_VERSION = '1.2.10'
-        DAGGER2_VERSION = '2.14.1'
-        RXJAVA2_VERSION = '2.1.7'
-        RX_ANDROID_VERSION = '2.0.1'
-        TIMBER_VERSION = '4.6.0'
-    }
+    apply from: 'shared-properties.gradle'
 
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.0-alpha06'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"

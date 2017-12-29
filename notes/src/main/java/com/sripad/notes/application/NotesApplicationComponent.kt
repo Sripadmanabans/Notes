@@ -1,12 +1,15 @@
 package com.sripad.notes.application
 
 import android.content.Context
+import com.sripad.database.dagger.DatabaseModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
+import javax.inject.Singleton
 
-@Component(modules = [AndroidInjectionModule::class, ActivitiesBindingModule::class])
+@Singleton
+@Component(modules = [AndroidInjectionModule::class, ActivitiesBindingModule::class, DatabaseModule::class])
 interface NotesApplicationComponent : AndroidInjector<NotesApplication> {
 
     @Component.Builder

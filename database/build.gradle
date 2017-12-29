@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+
+android ANDROID_LIBRARY_CONFIGURATION
+android.sourceSets.androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+
+dependencies DAGGER_DEPENDENCIES
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$KOTLIN_VERSION"
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:${ROOM_VERSION}"
+    kapt "android.arch.persistence.room:compiler:${ROOM_VERSION}"
+    // RxJava support for Room
+    implementation "android.arch.persistence.room:rxjava2:${ROOM_VERSION}"
+
+    implementation "net.danlew:android.joda:${JODA_TIME_VERSION}"
+
+    implementation "com.jakewharton.timber:timber:${TIMBER_VERSION}"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+kapt {
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas".toString())
+    }
+}

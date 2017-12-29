@@ -36,12 +36,16 @@ dependencies DAGGER_ANDROID_DEPENDENCIES
 dependencies RXJAVA2_DEPENDENCIES
 dependencies {
 
+    implementation project(':database')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$KOTLIN_VERSION"
 
     implementation "com.android.support:appcompat-v7:${SUPPORT_LIBRARY_VERSION}"
     implementation "com.android.support:support-v4:${SUPPORT_LIBRARY_VERSION}"
 
     implementation "com.android.support.constraint:constraint-layout:${CONSTRAINT_LAYOUT_VERSION}"
+
+    implementation "net.danlew:android.joda:${JODA_TIME_VERSION}"
 
     implementation "com.jakewharton.timber:timber:${TIMBER_VERSION}"
 

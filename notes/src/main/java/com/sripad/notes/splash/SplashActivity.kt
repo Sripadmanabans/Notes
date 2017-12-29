@@ -25,8 +25,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        // Hide both the navigation bar
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        // Hide the navigation bar
+        val oldVisibility = window.decorView.systemUiVisibility
+        window.decorView.systemUiVisibility = oldVisibility or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         setContentView(R.layout.activity_splash)
     }
 

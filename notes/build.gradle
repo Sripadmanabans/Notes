@@ -48,6 +48,9 @@ dependencies {
     implementation "net.danlew:android.joda:${JODA_TIME_VERSION}"
 
     implementation "com.jakewharton.timber:timber:${TIMBER_VERSION}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:${RX_BINDING_VERSION}"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:${RX_BINDING_VERSION}"
+    implementation "com.jakewharton.rxrelay2:rxrelay:${RX_RELAY_VERSION}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

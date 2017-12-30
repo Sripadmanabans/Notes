@@ -26,6 +26,8 @@
 
         <activity android:name=".home.HomeActivity"/>
 
+        <activity android:name=".note.NewNoteActivity"/>
+
     </application>
 
 </manifest>

@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#FFf5f5f5</color>
     <color name="colorPrimaryDark">#FFf5f5f5</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FF000000</color>
 
     <!--Splash Screen-->
     <color name="splash_text_color">#FF000000</color>

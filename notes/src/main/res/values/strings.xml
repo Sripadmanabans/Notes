@@ -5,4 +5,7 @@
     <!--Splash Screen -->
     <string name="splash_text">Notes</string>
 
+    <!--Home Screen-->
+    <string name="menu_add_note">Add a New Note</string>
+
 </resources>

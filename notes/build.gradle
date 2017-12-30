@@ -45,6 +45,10 @@ dependencies {
 
     implementation "com.android.support.constraint:constraint-layout:${CONSTRAINT_LAYOUT_VERSION}"
 
+    implementation "android.arch.lifecycle:common-java8:${LIFECYCLE_COMPONENTS_VERSION}"
+    implementation "android.arch.lifecycle:extensions:${LIFECYCLE_COMPONENTS_VERSION}"
+    kapt "android.arch.lifecycle:compiler:${LIFECYCLE_COMPONENTS_VERSION}"
+
     implementation "net.danlew:android.joda:${JODA_TIME_VERSION}"
 
     implementation "com.jakewharton.timber:timber:${TIMBER_VERSION}"

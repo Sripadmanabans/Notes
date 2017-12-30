@@ -2,7 +2,6 @@ package com.sripad.database.agent
 
 import com.sripad.database.dao.NotesDao
 import com.sripad.database.tables.NoteEntity
-import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -21,15 +20,15 @@ data class NoteContainer(
 
 interface DatabaseAgent {
 
-    fun insertNote(title: String, note: String): Completable
+    fun insertNote(title: String, note: String): Single<Long>
 
-    fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Completable
+    fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Single<Int>
 
-    fun deleteNote(noteToDelete: NoteContainer): Completable
+    fun deleteNote(noteToDelete: NoteContainer): Single<Int>
 
-    fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Completable
+    fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Single<Int>
 
-    fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Completable
+    fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Single<Int>
 
     fun retrieveStarredNotes(): Flowable<List<NoteContainer>>
 
@@ -38,46 +37,41 @@ interface DatabaseAgent {
 
 class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) : DatabaseAgent {
 
-    override fun insertNote(title: String, note: String): Completable {
+    override fun insertNote(title: String, note: String): Single<Long> {
         val localDateTime = LocalDateTime.now()
         val noteEntity = NoteEntity(title = title, note = note, createdOn = localDateTime, modifiedOn = localDateTime)
         return Single.fromCallable { notesDao.insert(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[insertNote] Note inserted at $it") }
-                .toCompletable()
     }
 
-    override fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Completable {
+    override fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Single<Int> {
         val modifiedOn = LocalDateTime.now()
         val noteEntity = noteToUpdate.toNoteEntity(title = title, note = note, modifiedOn = modifiedOn)
         return Single.fromCallable { notesDao.update(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[updateNote] Number of notes updated: $it") }
-                .toCompletable()
     }
 
-    override fun deleteNote(noteToDelete: NoteContainer): Completable {
+    override fun deleteNote(noteToDelete: NoteContainer): Single<Int> {
         val noteEntity = noteToDelete.toNoteEntity()
         return Single.fromCallable { notesDao.delete(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[deleteNote] No of notes deleted: $it") }
-                .toCompletable()
     }
 
-    override fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Completable {
+    override fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Single<Int> {
         val noteEntity = noteToUpdate.toNoteEntity(favorite = favoriteStatus)
         return Single.fromCallable { notesDao.update(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[toggleFavoriteStatus] No of notes updated: $it") }
-                .toCompletable()
     }
 
-    override fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Completable {
+    override fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Single<Int> {
         val noteEntity = noteToUpdate.toNoteEntity(starred = starredStatus)
         return Single.fromCallable { notesDao.update(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[toggleStarredStatus] No of notes updated: $it") }
-                .toCompletable()
     }
 
     override fun retrieveStarredNotes(): Flowable<List<NoteContainer>> {

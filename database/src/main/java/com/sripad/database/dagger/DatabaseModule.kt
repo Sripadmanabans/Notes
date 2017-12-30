@@ -10,18 +10,20 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-@Singleton
 @Module
 class DatabaseModule {
 
+    @Singleton
     @Provides
     internal fun provideNotesDatabase(context: Context): NotesDatabase {
         return Room.databaseBuilder(context.applicationContext, NotesDatabase::class.java, "notes.db").build()
     }
 
+    @Singleton
     @Provides
     internal fun provideNotesDoa(database: NotesDatabase) = database.notesDoa()
 
+    @Singleton
     @Provides
     internal fun provideDatabaseAgent(notesDao: NotesDao): DatabaseAgent = DefaultDatabaseAgent(notesDao)
 }

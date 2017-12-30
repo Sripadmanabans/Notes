@@ -5,6 +5,7 @@ import android.app.Application
 import com.sripad.notes.timber.CustomTimberTree
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class NotesApplication : Application(), HasActivityInjector {
         super.onCreate()
 
         Timber.plant(CustomTimberTree())
+        JodaTimeAndroid.init(this)
 
         val applicationComponent = DaggerNotesApplicationComponent.builder().bindContext(this).build()
         applicationComponent.inject(this)

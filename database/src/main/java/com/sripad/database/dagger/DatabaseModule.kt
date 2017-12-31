@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+// TODO: Figure out why Singleton cannot be pulled to module level.
 @Module
 class DatabaseModule {
 

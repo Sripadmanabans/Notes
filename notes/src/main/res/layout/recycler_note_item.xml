@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_8dp"
+        android:layout_marginStart="@dimen/dimen_12dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/note_item_title_color"
+        android:textSize="@dimen/note_item_title_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/gist"
+        app:layout_constraintEnd_toStartOf="@id/star"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title value should be shown here."/>
+
+    <TextView
+        android:id="@+id/gist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/note_item_gist_color"
+        android:textSize="@dimen/note_item_gist_text_size"
+        app:layout_constraintBottom_toTopOf="@id/modified_on"
+        app:layout_constraintEnd_toEndOf="@id/title"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="This should contain a gist that is long will get truncated."/>
+
+    <TextView
+        android:id="@+id/modified_on"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:textColor="@color/note_item_modified_at_color"
+        android:textSize="@dimen/note_item_modified_at_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/title"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/gist"
+        tools:text="Today at 6:30pm"/>
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="@dimen/dimen_36dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/dimen_8dp"
+        android:layout_marginStart="@dimen/dimen_8dp"
+        android:contentDescription="@string/note_item_star_content_description"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintEnd_toStartOf="@id/favorite"
+        app:layout_constraintStart_toEndOf="@id/title"
+        app:layout_constraintTop_toTopOf="@id/title"
+        tools:tint="@color/note_item_star_color"/>
+
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="@dimen/dimen_36dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/dimen_12dp"
+        android:layout_marginStart="@dimen/dimen_8dp"
+        android:contentDescription="@string/note_item_favorite_content_description"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/star"
+        app:layout_constraintTop_toTopOf="@id/title"
+        tools:tint="@color/note_item_favorite_color"/>
+
+</android.support.constraint.ConstraintLayout>

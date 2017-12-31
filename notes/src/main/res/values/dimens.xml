@@ -2,7 +2,11 @@
 <resources>
 
     <!--General dimensions-->
+    <dimen name="dimen_4dp">4dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_12dp">12dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_36dp">36dp</dimen>
 
     <!--Splash Screen-->
     <dimen name="splash_text_size">50sp</dimen>
@@ -10,5 +14,10 @@
     <!--New Note Screen-->
     <dimen name="title_text_size">32sp</dimen>
     <dimen name="note_text_size">24sp</dimen>
+
+    <!--Recycler note item-->
+    <dimen name="note_item_title_text_size">18sp</dimen>
+    <dimen name="note_item_gist_text_size">14sp</dimen>
+    <dimen name="note_item_modified_at_text_size">12sp</dimen>
 
 </resources>

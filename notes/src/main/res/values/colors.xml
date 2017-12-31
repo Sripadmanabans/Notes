@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--General colors-->
     <color name="colorPrimary">#FFf5f5f5</color>
     <color name="colorPrimaryDark">#FFf5f5f5</color>
     <color name="colorAccent">#FF000000</color>
@@ -9,6 +10,14 @@
     <color name="splash_text_color">#FF000000</color>
     <color name="splash_background_color">#FFFFFFFF</color>
 
+    <!--Home Screen-->
     <color name="home_background_color">#FFFFFFFF</color>
+
+    <!--Note item-->
+    <color name="note_item_title_color">#FF2B2B2B</color>
+    <color name="note_item_gist_color">#FF9A9A9A</color>
+    <color name="note_item_modified_at_color">#FFA5A5A5</color>
+    <color name="note_item_star_color">#FFF7CF38</color>
+    <color name="note_item_favorite_color">#FFFA3A53</color>
 
 </resources>

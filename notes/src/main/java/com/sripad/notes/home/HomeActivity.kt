@@ -3,6 +3,8 @@ package com.sripad.notes.home
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.annotation.DrawableRes
+import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -28,7 +30,7 @@ import javax.inject.Inject
 class HomeActivity : AppCompatActivity() {
 
     private val disposables = CompositeDisposable()
-    private val notesAdapter = NotesAdapter()
+    private val notesAdapter = NotesAdapter(this::itemClick)
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -83,23 +85,39 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun itemClick(@IdRes id: Int, noteInfo: NoteInfo) {
+        when (id) {
+            R.id.favorite -> homeViewModel.toggleFavorite(noteInfo)
+            R.id.star -> homeViewModel.toggleStarred(noteInfo)
+            else -> error("Click not handled for id: $id")
+        }
+    }
 }
 
 private class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindNoteInfo(noteInfo: NoteInfo) {
+    fun bindNoteInfo(noteInfo: NoteInfo, itemClick: (Int, NoteInfo) -> Unit) {
         itemView.title.setTextOrGone(noteInfo.title)
         itemView.gist.setTextOrGone(noteInfo.note)
         itemView.modified_on.setTextOrGone(noteInfo.modifiedOn.getFormattedText())
+
+        @DrawableRes val favoriteDrawableId = if (noteInfo.favorite) R.drawable.ic_favorite_selected else R.drawable.ic_favorite_unselected
+        itemView.favorite.setBackgroundResource(favoriteDrawableId)
+        itemView.favorite.setOnClickListener { itemClick(it.id, noteInfo) }
+
+        @DrawableRes val starDrawableId = if (noteInfo.starred) R.drawable.ic_star_selected else R.drawable.ic_star_unselected
+        itemView.star.setBackgroundResource(starDrawableId)
+        itemView.star.setOnClickListener { itemClick(it.id, noteInfo) }
     }
 }
 
-private class NotesAdapter : RecyclerView.Adapter<NoteViewHolder>() {
+private class NotesAdapter(private val itemClick: (Int, NoteInfo) -> Unit) : RecyclerView.Adapter<NoteViewHolder>() {
 
     private val notes = mutableListOf<NoteInfo>()
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bindNoteInfo(notes[position])
+        holder.bindNoteInfo(notes[position], itemClick)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {

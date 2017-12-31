@@ -17,7 +17,5 @@
     <color name="note_item_title_color">#FF2B2B2B</color>
     <color name="note_item_gist_color">#FF9A9A9A</color>
     <color name="note_item_modified_at_color">#FFA5A5A5</color>
-    <color name="note_item_star_color">#FFF7CF38</color>
-    <color name="note_item_favorite_color">#FFFA3A53</color>
 
 </resources>

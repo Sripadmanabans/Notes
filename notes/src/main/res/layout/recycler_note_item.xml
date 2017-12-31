@@ -14,13 +14,12 @@
         android:layout_marginTop="@dimen/dimen_12dp"
         android:contentDescription="@string/note_item_star_content_description"
         android:padding="@dimen/dimen_4dp"
-        android:src="@drawable/ic_star"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/favorite"
         app:layout_constraintStart_toEndOf="@id/barrier"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:tint="@color/note_item_star_color"/>
+        tools:src="@drawable/ic_star_selected"/>
 
     <ImageView
         android:id="@+id/favorite"
@@ -31,13 +30,12 @@
         android:layout_marginTop="@dimen/dimen_12dp"
         android:contentDescription="@string/note_item_favorite_content_description"
         android:padding="@dimen/dimen_4dp"
-        android:src="@drawable/ic_favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/star"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:tint="@color/note_item_favorite_color"/>
+        tools:src="@drawable/ic_favorite_selected"/>
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier"

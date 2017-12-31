@@ -2,6 +2,8 @@ package com.sripad.notes.note
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -10,6 +12,7 @@ import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.sripad.notes.R
 import com.sripad.notes.viewmodel.getViewModel
 import dagger.android.AndroidInjection
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_new_note.*
 import timber.log.Timber
@@ -47,7 +50,7 @@ class NewNoteActivity : AppCompatActivity() {
                 }
                 .subscribe()
 
-        val navigationDisposable = toolbar.navigationClicks().subscribe { newNoteViewModel.onBackPressed() }
+        val navigationDisposable = toolbar.navigationClicks().observeOn(AndroidSchedulers.mainThread()).subscribe { onBackPressed() }
 
         disposables.addAll(navigationDisposable, itemClickDisposable)
     }
@@ -61,14 +64,17 @@ class NewNoteActivity : AppCompatActivity() {
             is NewNoteUiModel.ValueSaved -> {
                 finish()
             }
-            is NewNoteUiModel.BackPressed -> {
-                onBackPressed()
-            }
         }
     }
 
     override fun onDestroy() {
         disposables.clear()
         super.onDestroy()
+    }
+
+    companion object {
+        fun navigationIntent(context: Context): Intent {
+            return Intent(context, NewNoteActivity::class.java)
+        }
     }
 }

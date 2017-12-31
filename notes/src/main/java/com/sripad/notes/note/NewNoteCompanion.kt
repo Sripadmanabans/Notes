@@ -11,7 +11,6 @@ import javax.inject.Inject
 internal sealed class NewNoteUiModel {
     data class ValueSaved(val id: Long) : NewNoteUiModel()
     object NothingToSave : NewNoteUiModel()
-    object BackPressed: NewNoteUiModel()
 }
 
 internal class NewNoteViewModel @Inject constructor(private val databaseAgent: DatabaseAgent) : ViewModel() {
@@ -36,10 +35,6 @@ internal class NewNoteViewModel @Inject constructor(private val databaseAgent: D
                     .doOnSuccess { newNoteUiRelay.accept(NewNoteUiModel.ValueSaved(it)) }
                     .subscribe()
         }
-    }
-
-    fun onBackPressed() {
-        newNoteUiRelay.accept(NewNoteUiModel.BackPressed)
     }
 
     override fun onCleared() {

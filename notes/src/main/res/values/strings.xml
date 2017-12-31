@@ -7,6 +7,7 @@
 
     <!--Home Screen-->
     <string name="menu_add_note">Add a New Note</string>
+    <string name="empty_note_text">Please use the + button to add a note.</string>
 
     <!--New Note Screen-->
     <string name="new_note_hint">Note</string>

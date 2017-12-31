@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -110,8 +111,26 @@ private class NotesAdapter : RecyclerView.Adapter<NoteViewHolder>() {
     override fun getItemCount() = notes.size
 
     fun updateList(notes: List<NoteInfo>) {
+        val notesDiffUtil = NotesDiffUtil(this.notes, notes)
+        val calculateDiff = DiffUtil.calculateDiff(notesDiffUtil)
+
         this.notes.clear()
         this.notes.addAll(notes)
-        notifyDataSetChanged()
+        calculateDiff.dispatchUpdatesTo(this)
+    }
+}
+
+private class NotesDiffUtil(private val oldList: List<NoteInfo>, private val newList: List<NoteInfo>) : DiffUtil.Callback() {
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
+    }
+
+    override fun getOldListSize() = oldList.size
+
+    override fun getNewListSize() = newList.size
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

@@ -26,7 +26,7 @@
 
         <activity android:name=".home.HomeActivity"/>
 
-        <activity android:name=".note.NewNoteActivity"/>
+        <activity android:name=".note.create.CreateNoteActivity"/>
 
     </application>
 

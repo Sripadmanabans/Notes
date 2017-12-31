@@ -1,7 +1,7 @@
 package com.sripad.notes.application
 
 import com.sripad.notes.home.HomeActivity
-import com.sripad.notes.note.NewNoteActivity
+import com.sripad.notes.note.create.CreateNoteActivity
 import com.sripad.notes.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -19,5 +19,5 @@ internal abstract class ActivitiesBindingModule {
 
     @ActivityScoped
     @ContributesAndroidInjector
-    abstract fun contributeNewNoteActivityInjector(): NewNoteActivity
+    abstract fun contributeCreateNoteActivityInjector(): CreateNoteActivity
 }

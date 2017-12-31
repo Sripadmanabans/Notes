@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.sripad.database.agent.NoteInfo
 import com.sripad.notes.R
-import com.sripad.notes.note.NewNoteActivity
+import com.sripad.notes.note.create.CreateNoteActivity
 import com.sripad.notes.utils.getFormattedText
 import com.sripad.notes.utils.makeGone
 import com.sripad.notes.utils.makeVisible
@@ -48,7 +48,7 @@ class HomeActivity : AppCompatActivity() {
         val itemClickDisposables = toolbar.itemClicks()
                 .doOnNext {
                     when (it.itemId) {
-                        R.id.menu_add_note -> startActivity(NewNoteActivity.navigationIntent(this))
+                        R.id.menu_add_note -> startActivity(CreateNoteActivity.navigationIntent(this))
                         else -> error("Unhandled menu item ($it) click")
                     }
                 }

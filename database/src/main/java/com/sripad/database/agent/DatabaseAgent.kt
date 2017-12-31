@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 import org.joda.time.LocalDateTime
 import timber.log.Timber
 
-data class NoteContainer(
+data class NoteInfo(
         val id: Long,
         val title: String,
         val note: String,
@@ -22,17 +22,19 @@ interface DatabaseAgent {
 
     fun insertNote(title: String, note: String): Single<Long>
 
-    fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Single<Int>
+    fun updateNote(noteToUpdate: NoteInfo, title: String, note: String): Single<Int>
 
-    fun deleteNote(noteToDelete: NoteContainer): Single<Int>
+    fun deleteNote(noteToDelete: NoteInfo): Single<Int>
 
-    fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Single<Int>
+    fun toggleFavoriteStatus(noteToUpdate: NoteInfo, favoriteStatus: Boolean): Single<Int>
 
-    fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Single<Int>
+    fun toggleStarredStatus(noteToUpdate: NoteInfo, starredStatus: Boolean): Single<Int>
 
-    fun retrieveStarredNotes(): Flowable<List<NoteContainer>>
+    fun retrieveStarredNotes(): Flowable<List<NoteInfo>>
 
-    fun retrieveFavoriteNotes(): Flowable<List<NoteContainer>>
+    fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>>
+
+    fun retrieveNotes(): Flowable<List<NoteInfo>>
 }
 
 class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) : DatabaseAgent {
@@ -45,7 +47,7 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
                 .doOnSuccess { Timber.v("[insertNote] Note inserted at $it") }
     }
 
-    override fun updateNote(noteToUpdate: NoteContainer, title: String, note: String): Single<Int> {
+    override fun updateNote(noteToUpdate: NoteInfo, title: String, note: String): Single<Int> {
         val modifiedOn = LocalDateTime.now()
         val noteEntity = noteToUpdate.toNoteEntity(title = title, note = note, modifiedOn = modifiedOn)
         return Single.fromCallable { notesDao.update(noteEntity) }
@@ -53,36 +55,40 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
                 .doOnSuccess { Timber.v("[updateNote] Number of notes updated: $it") }
     }
 
-    override fun deleteNote(noteToDelete: NoteContainer): Single<Int> {
+    override fun deleteNote(noteToDelete: NoteInfo): Single<Int> {
         val noteEntity = noteToDelete.toNoteEntity()
         return Single.fromCallable { notesDao.delete(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[deleteNote] No of notes deleted: $it") }
     }
 
-    override fun toggleFavoriteStatus(noteToUpdate: NoteContainer, favoriteStatus: Boolean): Single<Int> {
+    override fun toggleFavoriteStatus(noteToUpdate: NoteInfo, favoriteStatus: Boolean): Single<Int> {
         val noteEntity = noteToUpdate.toNoteEntity(favorite = favoriteStatus)
         return Single.fromCallable { notesDao.update(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[toggleFavoriteStatus] No of notes updated: $it") }
     }
 
-    override fun toggleStarredStatus(noteToUpdate: NoteContainer, starredStatus: Boolean): Single<Int> {
+    override fun toggleStarredStatus(noteToUpdate: NoteInfo, starredStatus: Boolean): Single<Int> {
         val noteEntity = noteToUpdate.toNoteEntity(starred = starredStatus)
         return Single.fromCallable { notesDao.update(noteEntity) }
                 .subscribeOn(Schedulers.io())
                 .doOnSuccess { Timber.v("[toggleStarredStatus] No of notes updated: $it") }
     }
 
-    override fun retrieveStarredNotes(): Flowable<List<NoteContainer>> {
-        return notesDao.retrieveStarredNotes().subscribeOn(Schedulers.io()).map { it.toNoteContainers() }
+    override fun retrieveStarredNotes(): Flowable<List<NoteInfo>> {
+        return notesDao.retrieveStarredNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
     }
 
-    override fun retrieveFavoriteNotes(): Flowable<List<NoteContainer>> {
-        return notesDao.retrieveFavoriteNotes().subscribeOn(Schedulers.io()).map { it.toNoteContainers() }
+    override fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>> {
+        return notesDao.retrieveFavoriteNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
     }
 
-    private fun NoteContainer.toNoteEntity(
+    override fun retrieveNotes(): Flowable<List<NoteInfo>> {
+        return notesDao.retrieveNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
+    }
+
+    private fun NoteInfo.toNoteEntity(
             id: Long? = null,
             title: String? = null,
             note: String? = null,
@@ -102,9 +108,9 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
         )
     }
 
-    private fun List<NoteEntity>.toNoteContainers(): List<NoteContainer> {
+    private fun List<NoteEntity>.toNoteInfo(): List<NoteInfo> {
         return this.map {
-            NoteContainer(
+            NoteInfo(
                     id = it.id,
                     title = it.title,
                     note = it.note,

@@ -43,6 +43,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${SUPPORT_LIBRARY_VERSION}"
     implementation "com.android.support:support-v4:${SUPPORT_LIBRARY_VERSION}"
 
+    implementation "com.android.support:design:${SUPPORT_LIBRARY_VERSION}"
     implementation "com.android.support.constraint:constraint-layout:${CONSTRAINT_LAYOUT_VERSION}"
 
     implementation "android.arch.lifecycle:common-java8:${LIFECYCLE_COMPONENTS_VERSION}"

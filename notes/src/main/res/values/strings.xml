@@ -8,4 +8,10 @@
     <!--Home Screen-->
     <string name="menu_add_note">Add a New Note</string>
 
+    <!--New Note Screen-->
+    <string name="new_note_hint">Note</string>
+    <string name="new_note_title_hint">Title</string>
+    <string name="menu_save">Save</string>
+    <string name="new_note_empty_toast">Nothing to save!!</string>
+
 </resources>

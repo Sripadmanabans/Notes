@@ -22,6 +22,6 @@ internal interface NotesDao {
     @Query("SELECT * FROM Notes WHERE starred = 1")
     fun retrieveStarredNotes(): Flowable<List<NoteEntity>>
 
-    @Query("SELECT * FROM Notes ORDER BY modifiedOn ASC")
+    @Query("SELECT * FROM Notes ORDER BY modifiedOn DESC")
     fun retrieveNotes(): Flowable<List<NoteEntity>>
 }

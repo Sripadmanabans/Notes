@@ -13,6 +13,7 @@ import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.sripad.database.agent.NoteInfo
 import com.sripad.notes.R
 import com.sripad.notes.note.NewNoteActivity
+import com.sripad.notes.utils.getFormattedText
 import com.sripad.notes.utils.makeGone
 import com.sripad.notes.utils.makeVisible
 import com.sripad.notes.utils.setTextOrGone
@@ -89,9 +90,7 @@ private class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun bindNoteInfo(noteInfo: NoteInfo) {
         itemView.title.setTextOrGone(noteInfo.title)
         itemView.gist.setTextOrGone(noteInfo.note)
-        val modifiedOn = noteInfo.modifiedOn
-        val modifiedTime = "${modifiedOn.dayOfWeek} ${modifiedOn.dayOfMonth}"
-        itemView.modified_on.setTextOrGone(modifiedTime)
+        itemView.modified_on.setTextOrGone(noteInfo.modifiedOn.getFormattedText())
     }
 }
 

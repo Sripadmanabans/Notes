@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--General dimensions-->
+    <dimen name="dimen_8dp">8dp</dimen>
+
     <!--Splash Screen-->
     <dimen name="splash_text_size">50sp</dimen>
 
     <!--New Note Screen-->
-    <dimen name="title_input_margin">8dp</dimen>
-    <dimen name="title_edit_text_margin">8dp</dimen>
     <dimen name="title_text_size">32sp</dimen>
-    <dimen name="note_input_margin">8dp</dimen>
-    <dimen name="note_edit_text_margin">8dp</dimen>
     <dimen name="note_text_size">24sp</dimen>
 
 </resources>

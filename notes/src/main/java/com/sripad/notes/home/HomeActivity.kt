@@ -15,6 +15,7 @@ import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.sripad.database.agent.NoteInfo
 import com.sripad.notes.R
 import com.sripad.notes.note.create.CreateNoteActivity
+import com.sripad.notes.note.view.ViewNoteActivity
 import com.sripad.notes.utils.getFormattedText
 import com.sripad.notes.utils.makeGone
 import com.sripad.notes.utils.makeVisible
@@ -90,6 +91,7 @@ class HomeActivity : AppCompatActivity() {
         when (id) {
             R.id.favorite -> homeViewModel.toggleFavorite(noteInfo)
             R.id.star -> homeViewModel.toggleStarred(noteInfo)
+            R.id.note_item -> startActivity(ViewNoteActivity.navigationIntent(this, noteInfo.id))
             else -> error("Click not handled for id: $id")
         }
     }
@@ -98,6 +100,7 @@ class HomeActivity : AppCompatActivity() {
 private class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindNoteInfo(noteInfo: NoteInfo, itemClick: (Int, NoteInfo) -> Unit) {
+        itemView.setOnClickListener { itemClick(it.id, noteInfo) }
         itemView.title.setTextOrGone(noteInfo.title)
         itemView.gist.setTextOrGone(noteInfo.note)
         itemView.modified_on.setTextOrGone(noteInfo.modifiedOn.getFormattedText())

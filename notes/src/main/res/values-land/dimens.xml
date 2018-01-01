@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--View Note Screen-->
+    <dimen name="view_note_collapsible_toolbar_height">160dp</dimen>
+</resources>

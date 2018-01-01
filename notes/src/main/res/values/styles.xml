@@ -10,7 +10,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">#FFFFFFFF</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

@@ -14,7 +14,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:name=".splash.SplashActivity"
             android:noHistory="true"
-            android:theme="@style/FullScreenTheme">
+            android:theme="@style/SplashScreenTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,6 +27,8 @@
         <activity android:name=".home.HomeActivity"/>
 
         <activity android:name=".note.create.CreateNoteActivity"/>
+
+        <activity android:name=".note.view.ViewNoteActivity"/>
 
     </application>
 

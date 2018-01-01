@@ -5,6 +5,7 @@
     <color name="colorPrimary">#FFf5f5f5</color>
     <color name="colorPrimaryDark">#FFf5f5f5</color>
     <color name="colorAccent">#FF000000</color>
+    <color name="transparent">#00000000</color>
 
     <!--Splash Screen-->
     <color name="splash_text_color">#FF000000</color>
@@ -17,5 +18,10 @@
     <color name="note_item_title_color">#FF2B2B2B</color>
     <color name="note_item_gist_color">#FF9A9A9A</color>
     <color name="note_item_modified_at_color">#FFA5A5A5</color>
+
+    <!--View Note Screen-->
+    <color name="view_note_title_text_color">#FF2E2424</color>
+    <color name="view_note_modified_at_text_color">#FFC7C7C7</color>
+    <color name="view_note_note_text_color">#FF575757</color>
 
 </resources>

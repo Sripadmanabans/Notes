@@ -6,7 +6,9 @@
     <dimen name="dimen_8dp">8dp</dimen>
     <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_24dp">24dp</dimen>
     <dimen name="dimen_36dp">36dp</dimen>
+    <dimen name="dimen_48dp">48dp</dimen>
 
     <!--Splash Screen-->
     <dimen name="splash_text_size">50sp</dimen>
@@ -14,13 +16,19 @@
     <!--Home Screen-->
     <dimen name="empty_text_size">14sp</dimen>
 
-    <!--New Note Screen-->
+    <!--Create Note Screen-->
     <dimen name="title_text_size">32sp</dimen>
-    <dimen name="note_text_size">24sp</dimen>
+    <dimen name="note_text_size">18sp</dimen>
 
     <!--Recycler note item-->
     <dimen name="note_item_title_text_size">18sp</dimen>
     <dimen name="note_item_gist_text_size">14sp</dimen>
     <dimen name="note_item_modified_at_text_size">12sp</dimen>
+
+    <!--View Note Screen-->
+    <dimen name="view_note_collapsible_toolbar_height">200dp</dimen>
+    <dimen name="view_note_title_text_size">24sp</dimen>
+    <dimen name="view_note_modified_at_text_size">14sp</dimen>
+    <dimen name="view_note_note_text_size">18sp</dimen>
 
 </resources>

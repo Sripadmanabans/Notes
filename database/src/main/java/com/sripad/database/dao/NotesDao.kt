@@ -3,6 +3,7 @@ package com.sripad.database.dao
 import android.arch.persistence.room.*
 import com.sripad.database.tables.NoteEntity
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 internal interface NotesDao {
@@ -24,4 +25,7 @@ internal interface NotesDao {
 
     @Query("SELECT * FROM Notes ORDER BY modifiedOn DESC")
     fun retrieveNotes(): Flowable<List<NoteEntity>>
+
+    @Query("SELECT * FROM Notes WHERE id = :noteId")
+    fun retrieveNote(noteId: Long): Single<NoteEntity>
 }

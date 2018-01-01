@@ -35,6 +35,8 @@ interface DatabaseAgent {
     fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>>
 
     fun retrieveNotes(): Flowable<List<NoteInfo>>
+
+    fun retrieveNote(noteId: Long): Single<NoteInfo>
 }
 
 class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) : DatabaseAgent {
@@ -77,15 +79,25 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
     }
 
     override fun retrieveStarredNotes(): Flowable<List<NoteInfo>> {
-        return notesDao.retrieveStarredNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
+        return notesDao.retrieveStarredNotes()
+                .subscribeOn(Schedulers.io())
+                .map { noteContainers -> noteContainers.map { it.toNoteInfo() } }
     }
 
     override fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>> {
-        return notesDao.retrieveFavoriteNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
+        return notesDao.retrieveFavoriteNotes()
+                .subscribeOn(Schedulers.io())
+                .map { noteContainers -> noteContainers.map { it.toNoteInfo() } }
     }
 
     override fun retrieveNotes(): Flowable<List<NoteInfo>> {
-        return notesDao.retrieveNotes().subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
+        return notesDao.retrieveNotes()
+                .subscribeOn(Schedulers.io())
+                .map { noteContainers -> noteContainers.map { it.toNoteInfo() } }
+    }
+
+    override fun retrieveNote(noteId: Long): Single<NoteInfo> {
+        return notesDao.retrieveNote(noteId).subscribeOn(Schedulers.io()).map { it.toNoteInfo() }
     }
 
     private fun NoteInfo.toNoteEntity(
@@ -108,17 +120,15 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
         )
     }
 
-    private fun List<NoteEntity>.toNoteInfo(): List<NoteInfo> {
-        return this.map {
-            NoteInfo(
-                    id = it.id,
-                    title = it.title,
-                    note = it.note,
-                    favorite = it.favorite,
-                    starred = it.starred,
-                    createdOn = it.createdOn,
-                    modifiedOn = it.modifiedOn
-            )
-        }
+    private fun NoteEntity.toNoteInfo(): NoteInfo {
+        return NoteInfo(
+                id = this.id,
+                title = this.title,
+                note = this.note,
+                favorite = this.favorite,
+                starred = this.starred,
+                createdOn = this.createdOn,
+                modifiedOn = this.modifiedOn
+        )
     }
 }

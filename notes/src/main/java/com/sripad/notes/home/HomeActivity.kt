@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,8 @@ class HomeActivity : AppCompatActivity() {
 
         disposables.addAll(itemClickDisposables)
 
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        notes_list.addItemDecoration(dividerItemDecoration)
         notes_list.adapter = notesAdapter
     }
 

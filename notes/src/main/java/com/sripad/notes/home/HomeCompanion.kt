@@ -25,6 +25,7 @@ internal class HomeViewModel @Inject constructor(private val databaseAgent: Data
 
     private var toggleFavoriteDisposable: Disposable? = null
     private var toggleStarredDisposable: Disposable? = null
+    private var deleteDisposable: Disposable? = null
 
     val uiModel = ConsumerLiveData<HomeUiModel>()
 
@@ -56,9 +57,17 @@ internal class HomeViewModel @Inject constructor(private val databaseAgent: Data
                 .subscribe()
     }
 
+    fun deleteNote(noteInfo: NoteInfo) {
+        deleteDisposable?.dispose()
+        deleteDisposable = databaseAgent.deleteNote(noteInfo)
+                .doOnSuccess { Timber.d("[deleteNote] Deleted $it successful") }
+                .subscribe()
+    }
+
     override fun onCleared() {
         toggleFavoriteDisposable?.dispose()
         toggleStarredDisposable?.dispose()
+        deleteDisposable?.dispose()
         loadNotesDisposable.dispose()
         homeUiDisposable.dispose()
     }

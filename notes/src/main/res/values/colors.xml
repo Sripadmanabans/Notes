@@ -13,6 +13,8 @@
 
     <!--Home Screen-->
     <color name="home_background_color">#FFFFFFFF</color>
+    <color name="home_swipe_delete_background">#FFE02A42</color>
+    <color name="home_swipe_delete_text_color">#FFFFFFFF</color>
 
     <!--Note item-->
     <color name="note_item_title_color">#FF2B2B2B</color>

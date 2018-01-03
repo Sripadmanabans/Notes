@@ -2,13 +2,20 @@ package com.sripad.notes.home
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +68,22 @@ class HomeActivity : AppCompatActivity() {
         val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         notes_list.addItemDecoration(dividerItemDecoration)
         notes_list.adapter = notesAdapter
+
+        val deleteDrawable = getDrawable(R.drawable.ic_delete)
+        val backgroundColor = getColor(R.color.home_swipe_delete_background)
+        val deleteTextColor = getColor(R.color.home_swipe_delete_text_color)
+        val deleteTextMarginX = resources.displayMetrics.density * 24
+        val deleteTextSize = resources.displayMetrics.scaledDensity * 14
+        val config = SwipeCallbackConfig(deleteDrawable, deleteTextSize, deleteTextMarginX, backgroundColor, deleteTextColor)
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback(config) {
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val noteInfo = notesAdapter.getItem(viewHolder.adapterPosition)
+                homeViewModel.deleteNote(noteInfo)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(notes_list)
     }
 
     override fun onDestroy() {
@@ -133,6 +156,8 @@ private class NotesAdapter(private val itemClick: (Int, NoteInfo) -> Unit) : Rec
 
     override fun getItemCount() = notes.size
 
+    fun getItem(position: Int) = notes[position]
+
     fun updateList(notes: List<NoteInfo>) {
         val notesDiffUtil = NotesDiffUtil(this.notes, notes)
         val calculateDiff = DiffUtil.calculateDiff(notesDiffUtil)
@@ -155,5 +180,81 @@ private class NotesDiffUtil(private val oldList: List<NoteInfo>, private val new
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+}
+
+private data class SwipeCallbackConfig(
+        val deleteDrawable: Drawable,
+        val deleteTextSize: Float,
+        val deleteTextMarginX: Float,
+        @ColorInt val backgroundColor: Int,
+        @ColorInt val textColor: Int
+)
+
+private abstract class SwipeToDeleteCallback(config: SwipeCallbackConfig) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+    private val background = ColorDrawable(config.backgroundColor)
+
+    private val deleteTextPaint = Paint()
+    private val deleteTextBounds = Rect()
+
+    private val deleteDrawable = config.deleteDrawable
+    private val drawableWidth = config.deleteDrawable.intrinsicWidth
+    private val drawableHeight = config.deleteDrawable.intrinsicHeight
+    private val deleteTextMarginX = config.deleteTextMarginX
+
+    init {
+        deleteTextPaint.apply {
+            style = Paint.Style.FILL
+            color = config.textColor
+            isAntiAlias = true
+            textSize = config.deleteTextSize
+            getTextBounds(DELETE_TEXT, 0, DELETE_TEXT.length, deleteTextBounds)
+        }
+    }
+
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+
+    override fun onChildDraw(
+            canvas: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+    ) {
+        val itemView = viewHolder.itemView
+        val itemHeight = itemView.bottom - itemView.top
+
+        val deleteTextHeight = deleteTextBounds.bottom - deleteTextBounds.top
+        val deleteTextWidth = deleteTextPaint.measureText(DELETE_TEXT)
+
+        val deleteIconMargin = (itemHeight - drawableHeight - deleteTextHeight) / 2
+        val deleteIconTop = itemView.top + deleteIconMargin
+        val deleteIconBottom = deleteIconTop + drawableHeight
+
+        val deleteTextLeft = itemView.right - deleteTextWidth - deleteTextMarginX
+        val deleteTextBottom = deleteIconBottom + deleteTextHeight.toFloat()
+
+        val deleteIconLeft = deleteTextLeft + (deleteTextWidth - drawableWidth) / 2
+        val deleteIconRight = deleteIconLeft + drawableWidth
+
+        // Drawing the background.
+        background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+        background.draw(canvas)
+
+        // Drawing "Delete" text.
+        canvas.drawText(DELETE_TEXT, deleteTextLeft, deleteTextBottom, deleteTextPaint)
+
+        // Drawing the delete icon.
+        deleteDrawable.setBounds(deleteIconLeft.toInt(), deleteIconTop, deleteIconRight.toInt(), deleteIconBottom)
+        deleteDrawable.draw(canvas)
+
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+    }
+
+    companion object {
+        private const val DELETE_TEXT = "Delete"
     }
 }

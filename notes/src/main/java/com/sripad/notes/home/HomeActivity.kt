@@ -1,5 +1,6 @@
 package com.sripad.notes.home
 
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.graphics.Canvas
@@ -11,7 +12,9 @@ import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
-import android.support.v7.app.AppCompatActivity
+import android.support.annotation.StringRes
+import android.support.v4.app.DialogFragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -30,13 +33,15 @@ import com.sripad.notes.utils.makeVisible
 import com.sripad.notes.utils.setTextOrGone
 import com.sripad.notes.viewmodel.getViewModel
 import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.recycler_note_item.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity() {
+internal class HomeActivity : DaggerAppCompatActivity() {
 
     private val disposables = CompositeDisposable()
     private val notesAdapter = NotesAdapter(this::itemClick)
@@ -58,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
                 .doOnNext {
                     when (it.itemId) {
                         R.id.menu_add_note -> startActivity(CreateNoteActivity.navigationIntent(this))
+                        R.id.menu_filter_list -> FilterDialogFragment().show(supportFragmentManager, "FilterDialog")
                         else -> error("Unhandled menu item ($it) click")
                     }
                 }
@@ -66,8 +72,10 @@ class HomeActivity : AppCompatActivity() {
         disposables.addAll(itemClickDisposables)
 
         val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        notes_list.addItemDecoration(dividerItemDecoration)
-        notes_list.adapter = notesAdapter
+        notes_list.apply {
+            addItemDecoration(dividerItemDecoration)
+            adapter = notesAdapter
+        }
 
         val deleteDrawable = getDrawable(R.drawable.ic_delete)
         val backgroundColor = getColor(R.color.home_swipe_delete_background)
@@ -94,9 +102,9 @@ class HomeActivity : AppCompatActivity() {
     private fun onUiModelUpdated(homeUiModel: HomeUiModel) {
         Timber.d("[onUiModelUpdated] Ui Model Updated: $homeUiModel")
         when (homeUiModel) {
-            is HomeUiModel.AllNotes -> {
+            is HomeUiModel.Notes -> {
                 notes_list.makeVisible()
-                notesAdapter.updateList(homeUiModel.notes)
+                notesAdapter.updateList(homeUiModel.value)
                 loading_spinner.makeGone()
                 empty_list_text.makeGone()
             }
@@ -105,8 +113,16 @@ class HomeActivity : AppCompatActivity() {
                 notes_list.makeGone()
                 empty_list_text.makeGone()
             }
-            is HomeUiModel.Empty -> {
-                empty_list_text.makeVisible()
+            is HomeUiModel.EmptyList -> {
+                @StringRes val emptyTextId = if (homeUiModel.afterFilter) {
+                    R.string.empty_filtered_list_text
+                } else {
+                    R.string.empty_list_text
+                }
+                empty_list_text.apply {
+                    setText(emptyTextId)
+                    makeVisible()
+                }
                 loading_spinner.makeGone()
                 notes_list.makeGone()
             }
@@ -256,5 +272,51 @@ private abstract class SwipeToDeleteCallback(config: SwipeCallbackConfig) : Item
 
     companion object {
         private const val DELETE_TEXT = "Delete"
+    }
+}
+
+internal class FilterDialogFragment : DialogFragment() {
+
+    private lateinit var homeViewModel: HomeViewModel
+
+    @Inject internal lateinit var viewModelProvider: ViewModelProvider.Factory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val activity = requireNotNull(activity) { "Activity should not be null in onActivityCreated" }
+        homeViewModel = viewModelProvider.getViewModel(activity)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireNotNull(context) { "Context cannot be null when creating a filter dialog!!" })
+
+        return builder.apply {
+            setTitle("Filter List")
+            setCancelable(true)
+            setSingleChoiceItems(options, -1, { _, which -> optionSelected(which) })
+        }.create()
+    }
+
+    private fun optionSelected(which: Int) {
+        val option = Options.valueOf(options[which].toUpperCase())
+        when (option) {
+            Options.FAVORITE -> homeViewModel.retrieveFavoriteNotes()
+            Options.STARRED -> homeViewModel.retrieveStarredNotes()
+            Options.NONE -> homeViewModel.retrieveNotes()
+        }
+        dismiss()
+    }
+
+    companion object {
+        private val options = Options.values().map { it.value }.toTypedArray()
+    }
+
+    private enum class Options(val value: String) {
+        FAVORITE("Favorite"), STARRED("Starred"), NONE("None")
     }
 }

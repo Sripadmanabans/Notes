@@ -11,9 +11,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 sealed class HomeUiModel {
-    data class AllNotes(val notes: List<NoteInfo>) : HomeUiModel()
+    data class Notes(val value: List<NoteInfo>) : HomeUiModel()
     object ShowLoadingSpinner : HomeUiModel()
-    object Empty : HomeUiModel()
+    data class EmptyList(val afterFilter: Boolean) : HomeUiModel()
 }
 
 internal class HomeViewModel @Inject constructor(private val databaseAgent: DatabaseAgent) : ViewModel() {
@@ -21,26 +21,21 @@ internal class HomeViewModel @Inject constructor(private val databaseAgent: Data
     private val homeUiRelay = BehaviorRelay.create<HomeUiModel>()
     private val homeUiDisposable: Disposable
 
-    private val loadNotesDisposable: Disposable
+    private var loadNotesDisposable: Disposable? = null
 
     private var toggleFavoriteDisposable: Disposable? = null
     private var toggleStarredDisposable: Disposable? = null
+
     private var deleteDisposable: Disposable? = null
+
+    private var retrieveFavoriteNotesDisposable: Disposable? = null
+    private var retrieveStarredNotesDisposable: Disposable? = null
 
     val uiModel = ConsumerLiveData<HomeUiModel>()
 
     init {
         homeUiDisposable = homeUiRelay.distinctUntilChanged().observeOn(AndroidSchedulers.mainThread()).subscribe(uiModel)
-        loadNotesDisposable = databaseAgent.retrieveNotes()
-                .map {
-                    if (it.isEmpty()) {
-                        HomeUiModel.Empty
-                    } else {
-                        HomeUiModel.AllNotes(it)
-                    }
-                }
-                .startWith(HomeUiModel.ShowLoadingSpinner)
-                .subscribe { homeUiRelay.accept(it) }
+        retrieveNotes()
     }
 
     fun toggleFavorite(noteInfo: NoteInfo) {
@@ -64,11 +59,61 @@ internal class HomeViewModel @Inject constructor(private val databaseAgent: Data
                 .subscribe()
     }
 
+    fun retrieveFavoriteNotes() {
+        retrieveFavoriteNotesDisposable?.dispose()
+        retrieveFavoriteNotesDisposable = databaseAgent.retrieveFavoriteNotes().toObservable()
+                .doOnNext { Timber.d("[retrieveFavoriteNotes] Notes retrieved: $it") }
+                .map {
+                    if (it.isEmpty()) {
+                        HomeUiModel.EmptyList(true)
+                    } else {
+                        HomeUiModel.Notes(it)
+                    }
+                }
+                .startWith(HomeUiModel.ShowLoadingSpinner)
+                .subscribe { homeUiRelay.accept(it) }
+    }
+
+    fun retrieveStarredNotes() {
+        retrieveStarredNotesDisposable?.dispose()
+        retrieveStarredNotesDisposable = databaseAgent.retrieveStarredNotes().toObservable()
+                .map { it.filter { noteInfo -> noteInfo.starred } }
+                .doOnNext { Timber.d("[retrieveStarredNotes] Notes retrieved: $it") }
+                .map {
+                    if (it.isEmpty()) {
+                        HomeUiModel.EmptyList(true)
+                    } else {
+                        HomeUiModel.Notes(it)
+                    }
+                }
+                .startWith(HomeUiModel.ShowLoadingSpinner)
+                .subscribe { homeUiRelay.accept(it) }
+    }
+
+    fun retrieveNotes() {
+        loadNotesDisposable?.dispose()
+        loadNotesDisposable = databaseAgent.retrieveNotes()
+                .map {
+                    if (it.isEmpty()) {
+                        HomeUiModel.EmptyList(false)
+                    } else {
+                        HomeUiModel.Notes(it)
+                    }
+                }
+                .startWith(HomeUiModel.ShowLoadingSpinner)
+                .subscribe { homeUiRelay.accept(it) }
+    }
+
     override fun onCleared() {
         toggleFavoriteDisposable?.dispose()
         toggleStarredDisposable?.dispose()
         deleteDisposable?.dispose()
-        loadNotesDisposable.dispose()
+
+        retrieveFavoriteNotesDisposable?.dispose()
+        retrieveStarredNotesDisposable?.dispose()
+
+        loadNotesDisposable?.dispose()
+
         homeUiDisposable.dispose()
     }
 }

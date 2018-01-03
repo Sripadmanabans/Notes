@@ -30,9 +30,9 @@ interface DatabaseAgent {
 
     fun toggleStarredStatus(noteToUpdate: NoteInfo, starredStatus: Boolean): Single<Int>
 
-    fun retrieveStarredNotes(): Flowable<List<NoteInfo>>
+    fun retrieveStarredNotes(): Single<List<NoteInfo>>
 
-    fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>>
+    fun retrieveFavoriteNotes(): Single<List<NoteInfo>>
 
     fun retrieveNotes(): Flowable<List<NoteInfo>>
 
@@ -78,13 +78,13 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
                 .doOnSuccess { Timber.v("[toggleStarredStatus] No of notes updated: $it") }
     }
 
-    override fun retrieveStarredNotes(): Flowable<List<NoteInfo>> {
+    override fun retrieveStarredNotes(): Single<List<NoteInfo>> {
         return notesDao.retrieveStarredNotes()
                 .subscribeOn(Schedulers.io())
                 .map { noteContainers -> noteContainers.map { it.toNoteInfo() } }
     }
 
-    override fun retrieveFavoriteNotes(): Flowable<List<NoteInfo>> {
+    override fun retrieveFavoriteNotes(): Single<List<NoteInfo>> {
         return notesDao.retrieveFavoriteNotes()
                 .subscribeOn(Schedulers.io())
                 .map { noteContainers -> noteContainers.map { it.toNoteInfo() } }

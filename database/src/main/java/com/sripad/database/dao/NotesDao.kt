@@ -17,11 +17,11 @@ internal interface NotesDao {
     @Delete
     fun delete(noteEntity: NoteEntity): Int
 
-    @Query("SELECT * FROM Notes WHERE favorite = 1")
-    fun retrieveFavoriteNotes(): Flowable<List<NoteEntity>>
+    @Query("SELECT * FROM Notes WHERE favorite = 1 ORDER BY modifiedOn DESC")
+    fun retrieveFavoriteNotes(): Single<List<NoteEntity>>
 
-    @Query("SELECT * FROM Notes WHERE starred = 1")
-    fun retrieveStarredNotes(): Flowable<List<NoteEntity>>
+    @Query("SELECT * FROM Notes WHERE starred = 1 ORDER BY modifiedOn DESC")
+    fun retrieveStarredNotes(): Single<List<NoteEntity>>
 
     @Query("SELECT * FROM Notes ORDER BY modifiedOn DESC")
     fun retrieveNotes(): Flowable<List<NoteEntity>>

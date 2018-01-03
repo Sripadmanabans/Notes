@@ -7,7 +7,9 @@
 
     <!--Home Screen-->
     <string name="menu_add_note">Add a New Note</string>
-    <string name="empty_note_text">Please use the + button to add a note.</string>
+    <string name="menu_filter_list">Filter List</string>
+    <string name="empty_list_text">Please use the + button to add a note.</string>
+    <string name="empty_filtered_list_text">No results found. Please select another filter.</string>
 
     <!--Create Note Screen-->
     <string name="new_note_hint">Note</string>

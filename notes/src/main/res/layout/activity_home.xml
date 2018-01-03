@@ -35,7 +35,6 @@
         android:id="@+id/empty_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/empty_note_text"
         android:visibility="gone"
         android:textSize="@dimen/empty_text_size"
         app:layout_constraintBottom_toBottomOf="parent"

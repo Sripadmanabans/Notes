@@ -2,10 +2,9 @@ package com.sripad.notes.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.FragmentActivity
 import dagger.MapKey
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
@@ -53,6 +52,6 @@ class ConsumerLiveData<T> : LiveData<T>(), Consumer<T> {
     override fun accept(t: T) = postValue(t)
 }
 
-internal inline fun <reified T : ViewModel> ViewModelProvider.Factory.getViewModel(activity: AppCompatActivity): T {
+internal inline fun <reified T : ViewModel> ViewModelProvider.Factory.getViewModel(activity: FragmentActivity): T {
     return ViewModelProviders.of(activity, this).get(T::class.java)
 }

@@ -43,7 +43,7 @@ import javax.inject.Inject
 
 internal class HomeActivity : DaggerAppCompatActivity() {
 
-    private val disposables = CompositeDisposable()
+    private val toolbarDisposables = CompositeDisposable()
     private val notesAdapter = NotesAdapter(this::itemClick)
 
     private lateinit var homeViewModel: HomeViewModel
@@ -69,7 +69,7 @@ internal class HomeActivity : DaggerAppCompatActivity() {
                 }
                 .subscribe()
 
-        disposables.addAll(itemClickDisposables)
+        toolbarDisposables.addAll(itemClickDisposables)
 
         val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         notes_list.apply {
@@ -95,7 +95,7 @@ internal class HomeActivity : DaggerAppCompatActivity() {
     }
 
     override fun onDestroy() {
-        disposables.clear()
+        toolbarDisposables.clear()
         super.onDestroy()
     }
 

@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class CreateNoteActivity : AppCompatActivity() {
 
-    private val disposables = CompositeDisposable()
+    private val toolbarDisposables = CompositeDisposable()
 
     private lateinit var createNoteViewModel: CreateNoteViewModel
 
@@ -52,7 +52,7 @@ class CreateNoteActivity : AppCompatActivity() {
 
         val navigationDisposable = toolbar.navigationClicks().observeOn(AndroidSchedulers.mainThread()).subscribe { onBackPressed() }
 
-        disposables.addAll(navigationDisposable, itemClickDisposable)
+        toolbarDisposables.addAll(navigationDisposable, itemClickDisposable)
     }
 
     private fun onUiModelUpdated(createNoteUiModel: CreateNoteUiModel) {
@@ -68,7 +68,7 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        disposables.clear()
+        toolbarDisposables.clear()
         super.onDestroy()
     }
 

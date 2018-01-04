@@ -17,6 +17,13 @@
     <string name="menu_save">Save</string>
     <string name="new_note_empty_toast">Nothing to save!!</string>
 
+    <!--View Note Screen-->
+    <string name="menu_edit">Edit</string>
+
+    <!--Edit Note Screen-->
+    <string name="menu_edit_save">Save</string>
+    <string name="edit_note_empty_toast">Nothing to save!!</string>
+
     <!--Recycler note item-->
     <string name="note_item_star_content_description">Star Note.</string>
     <string name="note_item_favorite_content_description">Favorite Note.</string>

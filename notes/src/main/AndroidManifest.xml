@@ -30,6 +30,8 @@
 
         <activity android:name=".note.view.ViewNoteActivity"/>
 
+        <activity android:name=".note.edit.EditNoteActivity"/>
+
     </application>
 
 </manifest>

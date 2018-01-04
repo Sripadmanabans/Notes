@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.sripad.notes.home.HomeViewModel
 import com.sripad.notes.note.create.CreateNoteViewModel
+import com.sripad.notes.note.edit.EditNoteViewModel
 import com.sripad.notes.note.view.ViewNoteViewModel
 import dagger.Binds
 import dagger.Module
@@ -26,6 +27,11 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ViewNoteViewModel::class)
     abstract fun bindViewNoteViewModel(viewNoteViewModel: ViewNoteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditNoteViewModel::class)
+    abstract fun bindEditNoteViewModel(editNoteViewModel: EditNoteViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(modelFactory: ViewModelFactory): ViewModelProvider.Factory

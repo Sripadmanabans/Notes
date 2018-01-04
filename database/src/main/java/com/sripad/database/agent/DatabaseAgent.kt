@@ -22,7 +22,7 @@ interface DatabaseAgent {
 
     fun insertNote(title: String, note: String): Single<Long>
 
-    fun updateNote(noteToUpdate: NoteInfo, title: String, note: String): Single<Int>
+    fun updateNote(noteId: Long, title: String, note: String): Single<Int>
 
     fun deleteNote(noteToDelete: NoteInfo): Single<Int>
 
@@ -49,11 +49,14 @@ class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) 
                 .doOnSuccess { Timber.v("[insertNote] Note inserted at $it") }
     }
 
-    override fun updateNote(noteToUpdate: NoteInfo, title: String, note: String): Single<Int> {
-        val modifiedOn = LocalDateTime.now()
-        val noteEntity = noteToUpdate.toNoteEntity(title = title, note = note, modifiedOn = modifiedOn)
-        return Single.fromCallable { notesDao.update(noteEntity) }
+    override fun updateNote(noteId: Long, title: String, note: String): Single<Int> {
+        return notesDao.retrieveNote(noteId)
+                .map {
+                    val modifiedOn = LocalDateTime.now()
+                    it.copy(title = title, note = note, modifiedOn = modifiedOn)
+                }
                 .subscribeOn(Schedulers.io())
+                .map { notesDao.update(it) }
                 .doOnSuccess { Timber.v("[updateNote] Number of notes updated: $it") }
     }
 

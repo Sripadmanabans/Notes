@@ -5,25 +5,30 @@ import android.content.Context
 import com.sripad.database.NotesDatabase
 import com.sripad.database.agent.DatabaseAgent
 import com.sripad.database.agent.DefaultDatabaseAgent
-import com.sripad.database.dao.NotesDao
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule {
+object DatabaseModule {
 
+    @JvmStatic
     @Singleton
     @Provides
     internal fun provideNotesDatabase(context: Context): NotesDatabase {
         return Room.databaseBuilder(context.applicationContext, NotesDatabase::class.java, "notes.db").build()
     }
 
+    @JvmStatic
     @Singleton
     @Provides
-    internal fun provideNotesDoa(database: NotesDatabase) = database.notesDoa()
+    internal fun provideNotesDoa(database: NotesDatabase) = database.notesDao()
+}
 
-    @Singleton
-    @Provides
-    internal fun provideDatabaseAgent(notesDao: NotesDao): DatabaseAgent = DefaultDatabaseAgent(notesDao)
+@Module
+abstract class DatabaseAgentModule {
+
+    @Binds
+    internal abstract fun bindDatabaseAgent(databaseAgent: DefaultDatabaseAgent): DatabaseAgent
 }

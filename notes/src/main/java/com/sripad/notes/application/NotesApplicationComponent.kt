@@ -1,6 +1,7 @@
 package com.sripad.notes.application
 
 import android.content.Context
+import com.sripad.database.dagger.DatabaseAgentModule
 import com.sripad.database.dagger.DatabaseModule
 import com.sripad.notes.viewmodel.ViewModelModule
 import dagger.BindsInstance
@@ -15,6 +16,7 @@ import javax.inject.Singleton
             AndroidInjectionModule::class,
             ActivitiesBindingModule::class,
             DatabaseModule::class,
+            DatabaseAgentModule::class,
             ViewModelModule::class
         ]
 )

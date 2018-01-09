@@ -13,14 +13,16 @@ import org.joda.time.LocalDateTime
 @TypeConverters(value = [LocalDateTimeConverter::class])
 internal abstract class NotesDatabase : RoomDatabase() {
 
-    abstract fun notesDoa(): NotesDao
+    abstract fun notesDao(): NotesDao
 }
 
-class LocalDateTimeConverter {
+internal object LocalDateTimeConverter {
 
+    @JvmStatic
     @TypeConverter
     fun longToLocalDateTime(time: Long) = LocalDateTime(time, DateTimeZone.getDefault())
 
+    @JvmStatic
     @TypeConverter
     fun localDateTimeToLong(dateTime: LocalDateTime) = dateTime.toDateTime(DateTimeZone.getDefault()).millis
 }

@@ -7,6 +7,8 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.LocalDateTime
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
 data class NoteInfo(
         val id: Long,
@@ -39,7 +41,8 @@ interface DatabaseAgent {
     fun retrieveNote(noteId: Long): Single<NoteInfo>
 }
 
-class DefaultDatabaseAgent internal constructor(private val notesDao: NotesDao) : DatabaseAgent {
+@Singleton
+internal class DefaultDatabaseAgent @Inject constructor(private val notesDao: NotesDao) : DatabaseAgent {
 
     override fun insertNote(title: String, note: String): Single<Long> {
         val localDateTime = LocalDateTime.now()

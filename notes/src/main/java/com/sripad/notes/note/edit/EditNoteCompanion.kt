@@ -5,9 +5,22 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.sripad.database.agent.DatabaseAgent
 import com.sripad.database.agent.NoteInfo
 import com.sripad.notes.viewmodel.ConsumerLiveData
+import com.sripad.notes.viewmodel.ViewModelKey
+import dagger.Binds
+import dagger.Module
+import dagger.multibindings.IntoMap
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
+
+@Module
+internal abstract class EditNoteViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditNoteViewModel::class)
+    abstract fun bindEditNoteViewModel(editNoteViewModel: EditNoteViewModel): ViewModel
+}
 
 sealed class EditNoteUiModel {
     data class NoteLoaded(val noteInfo: NoteInfo) : EditNoteUiModel()

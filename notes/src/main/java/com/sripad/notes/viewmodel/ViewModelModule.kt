@@ -5,6 +5,7 @@ import com.sripad.notes.home.HomeViewModelModule
 import com.sripad.notes.note.create.CreateNoteViewModelModule
 import com.sripad.notes.note.edit.EditNoteViewModelModule
 import com.sripad.notes.note.view.ViewNoteViewModelModule
+import com.sripad.viewmodel.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 

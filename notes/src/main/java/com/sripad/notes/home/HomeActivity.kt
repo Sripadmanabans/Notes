@@ -31,13 +31,20 @@ import com.sripad.notes.utils.getFormattedText
 import com.sripad.notes.utils.makeGone
 import com.sripad.notes.utils.makeVisible
 import com.sripad.notes.utils.setTextOrGone
-import com.sripad.notes.viewmodel.getViewModel
+import com.sripad.viewmodel.getViewModel
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.recycler_note_item.view.*
+import kotlinx.android.synthetic.main.activity_home.empty_list_text
+import kotlinx.android.synthetic.main.activity_home.loading_spinner
+import kotlinx.android.synthetic.main.activity_home.notes_list
+import kotlinx.android.synthetic.main.activity_home.toolbar
+import kotlinx.android.synthetic.main.recycler_note_item.view.favorite
+import kotlinx.android.synthetic.main.recycler_note_item.view.gist
+import kotlinx.android.synthetic.main.recycler_note_item.view.modified_on
+import kotlinx.android.synthetic.main.recycler_note_item.view.star
+import kotlinx.android.synthetic.main.recycler_note_item.view.title
 import timber.log.Timber
 import javax.inject.Inject
 

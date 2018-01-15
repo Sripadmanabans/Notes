@@ -11,11 +11,13 @@ import android.widget.Toast
 import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.sripad.notes.R
-import com.sripad.notes.viewmodel.getViewModel
+import com.sripad.viewmodel.getViewModel
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_edit_note.*
+import kotlinx.android.synthetic.main.activity_edit_note.note_edit_text
+import kotlinx.android.synthetic.main.activity_edit_note.title_edit_text
+import kotlinx.android.synthetic.main.activity_edit_note.toolbar
 import timber.log.Timber
 import javax.inject.Inject
 

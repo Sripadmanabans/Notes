@@ -37,6 +37,7 @@ dependencies RXJAVA2_DEPENDENCIES
 dependencies {
 
     implementation project(':database')
+    implementation project(':viewmodel')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$KOTLIN_VERSION"
 

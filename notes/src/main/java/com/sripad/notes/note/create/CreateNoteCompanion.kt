@@ -3,8 +3,8 @@ package com.sripad.notes.note.create
 import android.arch.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.sripad.database.agent.DatabaseAgent
-import com.sripad.notes.viewmodel.ConsumerLiveData
-import com.sripad.notes.viewmodel.ViewModelKey
+import com.sripad.viewmodel.ConsumerLiveData
+import com.sripad.viewmodel.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
